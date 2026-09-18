@@ -140,6 +140,20 @@ next session start. No build, no upload, no version bump, no removing an old cop
 lands in a separate `local-desktop-app-uploads` marketplace and will not upgrade
 a copy installed any other way.
 
+### On another machine
+
+The repo is public, so there is nothing to authenticate. Once per device, in a
+terminal `claude` session:
+
+```
+/plugin marketplace add lukeisbuildingsomething/ux-qa-claude-plugin
+/plugin install ux-qa@luke
+```
+
+Those devices track what has been **pushed**, not the working tree, so a change
+made on the dev machine reaches them after a push plus `/plugin marketplace
+update luke`.
+
 ## Optional: nightly full sweep
 
 The in-session loop only audits journeys that intersect the day's changes.
