@@ -118,6 +118,20 @@ to confirm the fix landed and nothing regressed. Append one line per fix to
 **Do not report these to the user.** This is the whole point — they asked for
 less review work, not a changelog.
 
+**Never write a Tier 1 item down instead of fixing it.** Do not create
+`TIER1-REMAINING.md`, `TODO.md`, a "still queued" section, or any other file or
+heading that holds unfixed Tier 1 work. Tier 1 means *the fix is unambiguous and
+safe, so do it now* — a Tier 1 item you are not fixing was mis-tiered, and the
+honest move is to re-tier it, not to shelve it:
+
+- Needs a product call after all → it is Tier 2. Ask it this turn with the rest.
+- Needs machinery that does not exist yet (a new lookup, a new endpoint) → that
+  is scope, so it is Tier 2. Ask it.
+- Not worth doing → it is Tier 3. Discard it and say nothing.
+
+A backlog file is the failure mode this plugin exists to remove. Writing one
+converts work you were supposed to absorb into work the user now has to track.
+
 ## Step 6 — Ask every open decision, right now
 
 First read `.claude/ux-qa/DECISIONS.md`. Anything buffered there from an earlier

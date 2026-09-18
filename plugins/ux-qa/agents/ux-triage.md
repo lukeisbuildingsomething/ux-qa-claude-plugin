@@ -73,6 +73,12 @@ discarded: <count only, with a one-line reason per category>
 new_expectation: <a single line to add to PRODUCT_EXPECTATIONS.md, or none>
 ```
 
+**Never emit a Tier 1 item that will not be fixed this turn.** If a finding is
+correct but cannot be implemented immediately and unambiguously — it needs a
+product call, or machinery that does not exist yet — it is Tier 2, not a Tier 1
+with a caveat. Never suggest recording one for later: no backlog file, no "still
+queued" list, no appendix. Tier 1 is a promise that the work is already done.
+
 If everything died in triage, return empty tiers. That is a good outcome, not a
 failed run — say so plainly rather than manufacturing findings to justify the
 audit.

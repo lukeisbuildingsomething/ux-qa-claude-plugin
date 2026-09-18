@@ -17,8 +17,16 @@ Set up the ux-qa loop for this project.
    - `DECISIONS.md` — empty queue, from the plugin template
    - `WONTFIX.md` — empty
    - `log.md` — empty
-   - `.gitignore` containing `state/` so screenshots and scratch scripts never
-     get committed
+   - `.gitignore` containing `state/`, `log.md` and `DECISIONS.md`. `state/`
+     holds screenshots, scratch scripts and `auth.json` — a live Playwright
+     session that must never be committed. `log.md` is append-only churn and
+     `DECISIONS.md` is a transient buffer; both conflict on every branch and
+     neither is worth reviewing. The contract files — `journeys/`,
+     `PRODUCT_EXPECTATIONS.md`, `WONTFIX.md` and `ux-qa.config.json` — **are**
+     committed: they are reviewable spec.
+   - Never write a credential into `ux-qa.config.json`. Seed steps reference an
+     environment variable (`"$UX_QA_PASSWORD"`) and the file says which one to
+     set. A password in a config file is a published password.
 
 3. Create `ux-qa.config.json` at the project root:
 
