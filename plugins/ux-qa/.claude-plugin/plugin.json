@@ -7,6 +7,5 @@
     "name": "Luke Reimer"
   },
   "license": "MIT",
-  "keywords": ["ux", "qa", "playwright", "review"],
-  "hooks": "./hooks/hooks.json"
+  "keywords": ["ux", "qa", "playwright", "review"]
 }
