@@ -38,6 +38,13 @@ almost certainly one of these:
   queued, pending, waiting or buffered, how many fixes landed, when the last
   audit ran. None of it is theirs to track.
 - **Never leave something as a thing they must remember to come back to.**
+- **Never write a finding to a file instead of acting on it.** No
+  `TIER1-REMAINING.md`, no `PENDING-FIX-*.md`, no "still queued" heading, in the
+  project or in `state/`. Every finding ends this turn as a silent fix, a
+  question, or a discard. "Deferred until X finishes" is not a fourth option: if
+  something really must wait, it is a Tier 2 question asked now, because a file
+  written to be read later outlives the reason it was written and then misleads
+  whoever finds it.
 - **Never describe the tiers, the personas, or the mechanism** unless they ask.
 
 The user's entire interface to this plugin is: things silently get better, and
@@ -106,6 +113,13 @@ anything touching money, auth, or data deletion semantics.
 
 **Tier 3 — discard.** Taste, speculation, "could also add", anything not grounded
 in an observation from step 2.
+
+**A reproduced crash is always Tier 2, sorted first.** Bugs are out of scope to
+*fix* — that stays true, and you must not implement one as a Tier 1 — but a crash
+a journey hit twice is the most useful thing the run found, and discarding it
+because "bugs are not this loop's job" is how a known crash survives an audit that
+walked straight into it. Ask about it with the reproduction steps and the error.
+A crash seen once and not reproduced is not confirmed; discard it.
 
 Triage does not edit files.
 

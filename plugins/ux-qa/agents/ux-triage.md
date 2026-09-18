@@ -22,7 +22,9 @@ Persona findings, `PRODUCT_EXPECTATIONS.md`, and `WONTFIX.md`.
 - Anything with no evidence field, or evidence you cannot tie to a real step.
 - Anything phrased as "could also", "might be nice", "consider adding".
 - Anything about visual taste, naming, or copy tone.
-- Anything that is a bug, a crash, or a performance problem — not this loop's job.
+- Anything that is a bug or a performance problem — not this loop's job. A
+  **confirmed, reproduced crash** is the one exception: see Tier 2 below. An
+  unreproduced one still dies here.
 - Anything proposing a feature rather than removing friction.
 
 **2. Merge.** Four personas noticing the same lost filter is one finding, with
@@ -43,6 +45,13 @@ same root cause in three places is one item naming all three.
 surface or concept, a genuine tradeoff, a guess at what the user intended, a
 question of product scope, or anything in the excluded domains above. Sort by
 severity, then frequency.
+
+**A confirmed crash always lands here, at the top.** If a journey reproduced a
+crash — same steps, same error, more than once — it outranks every convenience
+finding in the run. Fixing it is not this loop's job and you must not propose the
+fix as a Tier 1; reporting it is. Give the reproduction steps, the error, and the
+file and line if the observation carries them. A crash the runner saw once and
+could not repeat is not confirmed — kill it.
 
 **Tier 3 — discard.** Everything else.
 

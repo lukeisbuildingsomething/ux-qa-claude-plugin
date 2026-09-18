@@ -33,6 +33,8 @@ select ≤4 relevant journeys
   → ux-triage dedupes and tiers, capped hard
       Tier 1  → fixed silently, logged, never mentioned
       Tier 2  → all of them asked right now, as clickable questions
+                (a reproduced crash lands here first — out of scope to fix,
+                 never out of scope to tell you about)
       Tier 3  → discarded
   → one sentence, then the questions — nothing left for you to chase
 ```
@@ -40,6 +42,11 @@ select ≤4 relevant journeys
 Nothing in this loop ever asks you to run a command, open a file, or remember to
 come back. If a decision is open and you're there, it gets asked. That is the
 entire contract.
+
+It also never writes a finding down instead of acting on it. Every finding ends
+the turn as a silent fix, a question, or a discard — there is no backlog file,
+because one written to be read later outlives its reason and misleads whoever
+finds it.
 
 The personas run as **separate subagents** on purpose. Persona prompts inside one
 context converge on the same opinion — you get four voices agreeing with your
