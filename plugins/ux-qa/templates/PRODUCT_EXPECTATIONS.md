@@ -1,8 +1,15 @@
 # Product expectations
 
-The contract every UI change is audited against. Hard cap: **40 lines.** When
-adding a line would exceed it, generalise two existing lines into one instead.
-A long file gets skimmed and stops working.
+The contract every UI change is audited against.
+
+Hard cap: **80 lines.** When adding a line would exceed it, **prune, do not
+merge.** Drop the line whose journey no audit has exercised in the last ~20 runs,
+or that no finding has matched since it was written. Never blend two specific
+lines into one general one: triage can only auto-fix a finding when it violates a
+*specific* written line, so a vague expectation silently converts silent fixes
+into questions for the human. Specificity is the whole value of this file.
+
+A file that grows without limit gets skimmed and stops working.
 
 ## Global
 

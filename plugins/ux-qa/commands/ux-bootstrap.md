@@ -13,7 +13,7 @@ Set up the ux-qa loop for this project.
 2. Create `.claude/ux-qa/` containing:
    - `journeys/` — the derived journey files (at most 10)
    - `PRODUCT_EXPECTATIONS.md` — seeded from the plugin template plus any
-     app-specific lines the inventory implies, capped at 40 lines
+     app-specific lines the inventory implies, capped at 80 lines
    - `DECISIONS.md` — empty queue, from the plugin template
    - `WONTFIX.md` — empty
    - `log.md` — empty

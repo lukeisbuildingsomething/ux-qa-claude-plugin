@@ -85,8 +85,10 @@ Write `.claude/ux-qa/PRODUCT_EXPECTATIONS.md` from
 app-specific lines the inventory implies. Every persisted-state key from step 1
 that *should* survive a reload but does not is a line in this file.
 
-Hard cap: **40 lines.** This is a contract the model must hold in working memory,
-not documentation.
+Hard cap: **80 lines.** This is a contract the model must hold in working memory,
+not documentation. Keep every line specific — a general line cannot be matched to
+a concrete violation, and an expectation triage cannot match is an expectation
+that never produces a silent fix.
 
 ## Keeping journeys current
 

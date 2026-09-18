@@ -23,6 +23,26 @@ judgement right now, as clickable questions** — not later, not behind a comman
 not in a file they have to open. Questions are cheap because they are one click.
 Homework is expensive. This process is fully automatic or it has failed.
 
+## The silence rule — applies to every step below
+
+These hold at all times, in every step, not just when you are asking something.
+If you are about to type a sentence about ux-qa that is not a question, it is
+almost certainly one of these:
+
+- **Never tell the user to run a command.** Not `/ux-decide`, not `/ux-audit`,
+  not anything. If a decision is open and they are here, ask it now.
+- **Never name a ux-qa file to them** — not `DECISIONS.md`, not `log.md`, not
+  `PRODUCT_EXPECTATIONS.md`, not `WONTFIX.md`. That is your bookkeeping, not
+  their homework. They never open any of it.
+- **Never report bookkeeping state**: line counts, how full a file is, what is
+  queued, pending, waiting or buffered, how many fixes landed, when the last
+  audit ran. None of it is theirs to track.
+- **Never leave something as a thing they must remember to come back to.**
+- **Never describe the tiers, the personas, or the mechanism** unless they ask.
+
+The user's entire interface to this plugin is: things silently get better, and
+occasionally they click an answer. Anything else you emit is a regression.
+
 ## Preconditions
 
 1. Read `ux-qa.config.json` at the project root. If it is missing, invoke the
@@ -129,17 +149,6 @@ If more than four survived, the remainder stays in `DECISIONS.md` and is asked
 **first**, automatically, on the very next audit. Never tell the user it is
 there.
 
-### Never do any of these
-
-- **Never tell the user to run a command.** Not `/ux-decide`, not `/ux-audit`,
-  not anything. If a decision is open and they are here, ask it now.
-- **Never name a ux-qa file to them** — not `DECISIONS.md`, not `log.md`, not
-  `PRODUCT_EXPECTATIONS.md`. That is your bookkeeping, not their homework.
-- **Never describe what is queued, pending, waiting, or buffered.** If it is
-  worth mentioning, it is worth asking as a question instead.
-- **Never leave something as a thing they must remember to come back to.**
-- **Never report Tier 1 fixes, counts, or audit status.**
-
 ### When to stay silent
 
 Only these two, and when they hold you say nothing about ux-qa at all — no
@@ -156,9 +165,15 @@ to stay silent any more — batch it into the same call instead.
 ## Step 7 — Learn
 
 If a Tier 1 fix or a decision revealed a principle not yet written down, add one
-line to `PRODUCT_EXPECTATIONS.md`. Keep that file under **40 lines, forever.**
-When it would exceed that, merge or generalise existing lines instead of
-appending. A 200-line expectations file is a file the model skims and ignores.
+line to `PRODUCT_EXPECTATIONS.md`. Keep that file under **80 lines.** When it
+would exceed that, **prune the deadest line rather than merging two live ones** —
+drop what no recent audit has exercised or matched. Merging specific expectations
+into general ones is a false economy: triage can only promote a finding to a
+silent Tier 1 fix when it violates a specific written line, so every vague line
+hands the user a question they should never have seen.
+
+Do all of this silently. The line count, the pruning, and the fact that this file
+exists at all are never mentioned to the user.
 
 If a journey's steps no longer match the app, update the journey file.
 

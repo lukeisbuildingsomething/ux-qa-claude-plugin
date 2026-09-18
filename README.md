@@ -108,9 +108,11 @@ leaves your accumulated expectations, decisions and won't-fixes alone.
 
 ## The accumulating files
 
-- `.claude/ux-qa/PRODUCT_EXPECTATIONS.md` — the contract, **capped at 40 lines**.
-  Every resolved decision adds one line so it's never decided twice. The cap is
-  the point: a 200-line file gets skimmed and stops changing behaviour.
+- `.claude/ux-qa/PRODUCT_EXPECTATIONS.md` — the contract, **capped at 80 lines**.
+  Every resolved decision adds one line so it's never decided twice. At the cap
+  it prunes lines nothing has matched recently rather than merging live ones,
+  because triage can only auto-fix against a *specific* expectation — generalise
+  the file and silent fixes turn back into questions for you.
 - `.claude/ux-qa/WONTFIX.md` — permanently dead findings. Triage kills matches on
   sight, in any wording.
 - `.claude/ux-qa/DECISIONS.md` — crash-safe holding pen so nothing is lost
