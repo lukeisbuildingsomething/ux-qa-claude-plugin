@@ -1,7 +1,9 @@
 # UX decisions queue
 
-Open items requiring product judgement. **Cap: 5 open.** Work them with
-`/ux-decide` — one at a time, never as a list to read through.
+Buffer of decisions waiting their turn. Items surface automatically, one per
+turn, as you work — you should never need to open this file. It exists so
+nothing is lost between turns. `/ux-decide` clears the backlog in one sitting if
+you would rather do that.
 
 Resolved items move to the bottom. Rejected items move to `WONTFIX.md`.
 

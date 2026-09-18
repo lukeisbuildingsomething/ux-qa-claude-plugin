@@ -1,7 +1,7 @@
 ---
 name: ux-audit-loop
-description: Run a synthetic-user UX audit after a UI change. Drives the app through its journeys in a browser, has persona reviewers critique the result, silently fixes safe friction, and queues only genuine product decisions. Use when UI files have changed, when the ux-qa auto-trigger fires, or when the user asks for a UX audit, journey audit, or product review.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
+description: Run a synthetic-user UX audit after a UI change. Drives the app through its journeys in a browser, has persona reviewers critique the result, silently fixes safe friction, and asks the user about the one thing that needs their judgement. Use when UI files have changed, when the ux-qa auto-trigger fires, or when the user asks for a UX audit, journey audit, or product review.
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, AskUserQuestion
 ---
 
 # UX audit loop
@@ -11,10 +11,16 @@ announce themselves. Friction does not: the user re-types something the app
 already knew, loses a filter on reload, lands on a dead page after creating an
 object, or hits an empty state that tells them nothing.
 
-The person you work for is doing this to **stop being the primary tester**. Every
-item you hand them costs them attention. A long findings list is a failure, not a
-thorough job. Fix what you can prove is safe; escalate only what genuinely needs
-a human's product judgement.
+The person you work for is doing this to **stop being the primary tester**. Two
+rules follow from that, and they pull against each other. Hold both:
+
+1. Never hand them a list. Lists are review work in a new costume.
+2. Never make them remember to come back for something. A queue they have to
+   drain is a queue that rots.
+
+So: fix what you can prove is safe, and **ask about the single most important
+thing right now, as one question with one click** — not later, not in a file
+they have to open.
 
 ## Preconditions
 
@@ -73,48 +79,75 @@ choice. Preserving a filter, disabling a button while submitting, adding a
 loading state, focusing the first field, redirecting somewhere useful after
 create, adding a confirm to a destructive action, carrying a known value forward.
 
-**Tier 2 — queue for the human.** Anything that changes what the product *is*:
-new UI surface, new concept, a real tradeoff, a guess at intent, or anything
-touching money, auth, or data deletion semantics.
+**Tier 2 — needs the human's judgement.** Anything that changes what the product
+*is*: new UI surface, new concept, a real tradeoff, a guess at intent, or
+anything touching money, auth, or data deletion semantics.
 
 **Tier 3 — discard.** Taste, speculation, "could also add", anything not grounded
 in an observation from step 2.
 
 Triage does not edit files.
 
-## Step 5 — Act
+## Step 5 — Fix the safe ones silently
 
-For **Tier 1**: implement every item yourself, now. Then re-run the affected
-journeys once to confirm the fix landed and nothing regressed. Append one line
-per fix to `.claude/ux-qa/log.md` in the form
-`YYYY-MM-DD | journey | what changed`. **Do not report these to the user.** This
-is the whole point — they asked for less review work, not a changelog.
+Implement every Tier 1 item yourself, now. Then re-run the affected journeys once
+to confirm the fix landed and nothing regressed. Append one line per fix to
+`.claude/ux-qa/log.md` in the form `YYYY-MM-DD | journey | what changed`.
 
-For **Tier 2**: append to `.claude/ux-qa/DECISIONS.md` using the template at
-`${CLAUDE_PLUGIN_ROOT}/templates/decision.md`. Each entry states the journey, the
-observed behaviour, the expectation it misses, a recommended default, and the
-cost of doing nothing. **Cap the open queue at 5.** If it is already at 5, keep
-only the highest-severity items and drop the rest — a queue nobody can finish is
-the same fatigue in a new file.
+**Do not report these to the user.** This is the whole point — they asked for
+less review work, not a changelog.
 
-Do not raise Tier 2 items in conversation. They wait for `/ux-decide`.
+## Step 6 — Ask about ONE decision, right now
 
-## Step 6 — Learn
+Take the **single highest-severity Tier 2 item** and put it to the user with
+`AskUserQuestion`, at the end of this turn, before you finish speaking.
 
-If a Tier 1 fix revealed a principle not yet written down, add one line to
-`PRODUCT_EXPECTATIONS.md`. Keep that file under **40 lines, forever.** When it
-would exceed that, merge or generalise existing lines instead of appending. A
-200-line expectations file is a file the model skims and ignores.
+- The question is the product decision in plain language, **one sentence, no
+  jargon**. Say what the user experiences, not what the code does.
+- Option 1 is your recommendation, labelled `(Recommended)`.
+- Option 2 is the realistic alternative.
+- Option 3 is `Leave it alone`.
+- Each description is one short line: what they get, what it costs.
+
+Then act on the answer immediately: implement it, re-run the affected journey to
+confirm, and add the resulting principle as one line in
+`PRODUCT_EXPECTATIONS.md` so it is never asked again. `Leave it alone` goes to
+`WONTFIX.md` with the date — permanently dead, never raised again in any wording.
+
+**Exactly one question per turn. Never two, never a list of three.** Every other
+Tier 2 item goes to `.claude/ux-qa/DECISIONS.md` as a buffer and surfaces one at
+a time on later turns, highest severity first. The user should never need to open
+that file; it exists so nothing is lost between turns.
+
+### When to stay silent instead
+
+Do not ask if any of these hold — buffer it and move on:
+
+- The item is below `annoys` severity. Not everything deserves an interruption.
+- You already asked a ux-qa question earlier in this same turn.
+- The user is mid-flow on something urgent and this is unrelated. Their current
+  task outranks your audit, always.
+- This is an unattended or scheduled run with nobody there to answer.
+
+A buffered item surfaces on the next audit. Nothing is lost by waiting.
+
+## Step 7 — Learn
+
+If a Tier 1 fix or a decision revealed a principle not yet written down, add one
+line to `PRODUCT_EXPECTATIONS.md`. Keep that file under **40 lines, forever.**
+When it would exceed that, merge or generalise existing lines instead of
+appending. A 200-line expectations file is a file the model skims and ignores.
 
 If a journey's steps no longer match the app, update the journey file.
 
-## Step 7 — Close out
+## Step 8 — Close out
 
 Clear `files` in `.claude/ux-qa/state/dirty.json` and set `lastAuditAt`.
 
-Then say **at most two sentences** to the user. Good:
+Say **at most one sentence** before the question. Good:
 
-> Audited the character-creation and resume-session journeys; fixed 3 bits of
-> friction. One product decision is waiting in DECISIONS.md.
+> Checked character creation and resume-session, fixed a few small things — one
+> call worth making:
 
-Never paste the findings. Never paste the fix list. Never ask a question here.
+Then the `AskUserQuestion`. Never paste the findings. Never paste the fix list.
+Never explain the tiers. The question is the whole report.

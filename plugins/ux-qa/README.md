@@ -32,9 +32,9 @@ select ≤4 relevant journeys
       each with a clean context window, looking at the screenshots
   → ux-triage dedupes and tiers, capped hard
       Tier 1  → fixed silently, logged, never mentioned
-      Tier 2  → ≤3 queued in DECISIONS.md, never mentioned
+      Tier 2  → the top one asked as a single question, right now
       Tier 3  → discarded
-  → you get two sentences
+  → one sentence, then one question with one click
 ```
 
 The personas run as **separate subagents** on purpose. Persona prompts inside one
@@ -109,9 +109,9 @@ leaves your accumulated expectations, decisions and won't-fixes alone.
   the point: a 200-line file gets skimmed and stops changing behaviour.
 - `.claude/ux-qa/WONTFIX.md` — permanently dead findings. Triage kills matches on
   sight, in any wording.
-- `.claude/ux-qa/DECISIONS.md` — open queue, capped at 5. Worked with
-  `/ux-decide`, one item per exchange, each as a choice with a recommended
-  default.
+- `.claude/ux-qa/DECISIONS.md` — buffer for decisions waiting their turn. You
+  should never need to open it; items surface on their own, one per turn.
+  `/ux-decide` clears the backlog in one sitting if you prefer.
 - `.claude/ux-qa/log.md` — what got fixed silently, if you ever want to look.
 
 ## Commands
@@ -120,7 +120,7 @@ leaves your accumulated expectations, decisions and won't-fixes alone.
 |---|---|
 | `/ux-bootstrap` | derive journeys, expectations and config for this project |
 | `/ux-audit [journey\|all]` | force a run now |
-| `/ux-decide` | work the decision queue, one at a time |
+| `/ux-decide` | optional — clear waiting decisions in one sitting |
 
 ## Optional: nightly full sweep
 
