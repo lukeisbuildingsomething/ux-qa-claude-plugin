@@ -101,14 +101,17 @@ hand-written. `/ux-bootstrap` runs the `ux-journey-authoring` skill, which:
    param and preference — each one is an implicit promise to remember
    something), and entities plus roles.
 2. **Ranks** entities by centrality — default route, mutation count, link-in
-   count — and takes the top 3.
+   count — and takes the ones that carry real weight, usually 3 to 6.
 3. **Crosses** those with a fixed set of ten friction archetypes: first run,
    create, edit, resume, repeat, recover, abandon, scale, mobile, second role.
    The archetypes are universal; the nouns are yours. That's what makes
    `resume-session.md` come out of EmberDM and `repeat-last-trip.md` out of the
    camping app without anyone writing either.
-4. **Prunes to ≤10.** Ten journeys that run in two minutes beat forty that never
-   run.
+4. **Keeps what the app warrants** — no fixed target, hard ceiling 30. A focused
+   tool is done at 8; a multi-role app with deep persisted state earns 25. Each
+   journey must exercise a path no other one covers; variations get merged. Only
+   the journeys touching a change run in any given audit, so a larger set costs
+   little.
 
 Re-run `/ux-bootstrap --refresh` when routes change; it regenerates journeys and
 leaves your accumulated expectations, decisions and won't-fixes alone.

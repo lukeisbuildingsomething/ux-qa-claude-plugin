@@ -40,7 +40,9 @@ the non-primary role too, it is always the neglected one.
 
 Score each entity by: appears in the default route, referenced by the most
 mutations, highest link-in count, mentioned most in the README or CLAUDE.md.
-Take the **top 3 entities**. Everything else is out of scope for v1.
+Take the entities that carry real weight — usually **3 to 6**. A single-purpose
+tool may only have two; a CRM has more. Stop where the score falls off, not at a
+fixed number. Everything below that line is out of scope.
 
 ## Step 3 — Cross with the archetypes
 
@@ -61,9 +63,18 @@ the app's own vocabulary in the title — `resume-session.md`, not
 | 9 | **Mobile** | One thumb, small screen. Is the primary action reachable? | desktop-only by design |
 | 10 | **Second role** | The non-primary user's path through the same feature. | single-role app |
 
-Then **prune to at most 10 journeys total.** Ten good journeys that run in two
-minutes beat forty that never run. Prefer archetypes 1, 2, 4, 6 — first run,
-create, resume and recover catch the large majority of real friction.
+Then **keep what the app actually warrants. No fixed target; hard ceiling 30.**
+A focused tool is honestly done at 8; a multi-role app with deep persisted state
+earns 25. Size the set to the app, not to a number.
+
+The bar each journey clears: it exercises a path no other journey covers. Two
+journeys differing only in which field gets edited are one journey — cut those
+first. Hitting 30 means you are writing variations, so merge them rather than
+dropping a whole archetype.
+
+Order still matters, because a run only takes the journeys that intersect the
+change. Prefer archetypes 1, 2, 4, 6 — first run, create, resume and recover
+catch the large majority of real friction.
 
 ## Step 4 — Write the files
 
