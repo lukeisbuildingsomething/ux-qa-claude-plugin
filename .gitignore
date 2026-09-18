@@ -2,3 +2,5 @@ node_modules/
 .DS_Store
 *.log
 .ux-qa/
+
+# built artifact is committed on purpose so you can reinstall without rebuilding

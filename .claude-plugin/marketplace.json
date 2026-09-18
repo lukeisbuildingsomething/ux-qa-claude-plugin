@@ -1,0 +1,17 @@
+{
+  "name": "luke",
+  "owner": {
+    "name": "Luke Reimer"
+  },
+  "description": "Personal Claude Code plugins.",
+  "version": "1.0",
+  "metadata": {
+    "pluginRoot": "plugins/"
+  },
+  "plugins": [
+    {
+      "name": "ux-qa",
+      "source": "./plugins/ux-qa"
+    }
+  ]
+}
