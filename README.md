@@ -127,6 +127,19 @@ leaves your accumulated expectations, decisions and won't-fixes alone.
 | `/ux-audit [journey\|all]` | force a run now |
 | `/ux-decide` | escape hatch you shouldn't need — decisions are asked automatically |
 
+## Installing
+
+This repo is itself a plugin marketplace (`.claude-plugin/marketplace.json`), and
+it is registered locally as the `luke` marketplace pointing at this directory.
+A directory-source marketplace is read **in place**, so the working tree *is* the
+installed plugin: edit a file under `plugins/ux-qa/` and the change is live on the
+next session start. No build, no upload, no version bump, no removing an old copy.
+
+`dist/ux-qa.plugin` still exists for handing the plugin to someone else, and
+`bash build.sh` regenerates it. Installing that file is the manual path — it
+lands in a separate `local-desktop-app-uploads` marketplace and will not upgrade
+a copy installed any other way.
+
 ## Optional: nightly full sweep
 
 The in-session loop only audits journeys that intersect the day's changes.

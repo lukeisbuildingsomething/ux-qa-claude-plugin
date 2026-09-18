@@ -5,9 +5,6 @@
   },
   "description": "Personal Claude Code plugins.",
   "version": "1.0",
-  "metadata": {
-    "pluginRoot": "plugins/"
-  },
   "plugins": [
     {
       "name": "ux-qa",
