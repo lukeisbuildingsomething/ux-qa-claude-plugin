@@ -1,6 +1,6 @@
 ---
 name: ux-audit-loop
-description: Run a synthetic-user UX audit after a UI change. Drives the app through its journeys in a browser, has persona reviewers critique the result, silently fixes safe friction, and asks the user about the one thing that needs their judgement. Use when UI files have changed, when the ux-qa auto-trigger fires, or when the user asks for a UX audit, journey audit, or product review.
+description: Run a synthetic-user UX audit after a UI change. Drives the app through its journeys in a browser, has persona reviewers critique the result, silently fixes safe friction, and asks the user about everything that needs their judgement in one batch of clickable questions. Use when UI files have changed, when the ux-qa auto-trigger fires, or when the user asks for a UX audit, journey audit, or product review.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, AskUserQuestion
 ---
 
@@ -12,20 +12,21 @@ already knew, loses a filter on reload, lands on a dead page after creating an
 object, or hits an empty state that tells them nothing.
 
 The person you work for is doing this to **stop being the primary tester**. Two
-rules follow from that, and they pull against each other. Hold both:
+rules follow from that. Hold both:
 
-1. Never hand them a list. Lists are review work in a new costume.
-2. Never make them remember to come back for something. A queue they have to
-   drain is a queue that rots.
+1. Never hand them a list to read. Lists are review work in a new costume.
+2. Never make them remember to come back for something, run a command, or open a
+   file. A queue they have to drain is a queue that rots.
 
-So: fix what you can prove is safe, and **ask about the single most important
-thing right now, as one question with one click** — not later, not in a file
-they have to open.
+So: fix what you can prove is safe, and **ask everything that needs their
+judgement right now, as clickable questions** — not later, not behind a command,
+not in a file they have to open. Questions are cheap because they are one click.
+Homework is expensive. This process is fully automatic or it has failed.
 
 ## Preconditions
 
-1. Read `ux-qa.config.json` at the project root. If it is missing, run
-   `/ux-bootstrap` first and stop.
+1. Read `ux-qa.config.json` at the project root. If it is missing, invoke the
+   `ux-bootstrap` skill yourself and continue — do not ask the user to run it.
 2. Read `.claude/ux-qa/PRODUCT_EXPECTATIONS.md`. This is the contract you audit
    against.
 3. Read `.claude/ux-qa/WONTFIX.md` if present. Anything matching an entry there
@@ -97,39 +98,60 @@ to confirm the fix landed and nothing regressed. Append one line per fix to
 **Do not report these to the user.** This is the whole point — they asked for
 less review work, not a changelog.
 
-## Step 6 — Ask about ONE decision, right now
+## Step 6 — Ask every open decision, right now
 
-Take the **single highest-severity Tier 2 item** and put it to the user with
-`AskUserQuestion`, at the end of this turn, before you finish speaking.
+First read `.claude/ux-qa/DECISIONS.md`. Anything buffered there from an earlier
+turn joins this turn's Tier 2 items. **That buffer is yours to drain, never the
+user's.** It must not survive a turn in which someone was present to answer.
 
-- The question is the product decision in plain language, **one sentence, no
-  jargon**. Say what the user experiences, not what the code does.
+Sort the combined set by severity and put the top **up to four** to the user in a
+**single `AskUserQuestion` call**, at the end of this turn, before you finish
+speaking. Several questions in one call is correct and expected: it is one
+interaction, not a list. Asking four is always better than asking one and leaving
+three for the user to chase.
+
+Each question:
+
+- The product decision in plain language, **one sentence, no jargon**. Say what
+  the user experiences, not what the code does.
 - Option 1 is your recommendation, labelled `(Recommended)`.
 - Option 2 is the realistic alternative.
 - Option 3 is `Leave it alone`.
 - Each description is one short line: what they get, what it costs.
 
-Then act on the answer immediately: implement it, re-run the affected journey to
-confirm, and add the resulting principle as one line in
+Act on the answers immediately: implement each, re-run the affected journeys to
+confirm, and add each resulting principle as one line in
 `PRODUCT_EXPECTATIONS.md` so it is never asked again. `Leave it alone` goes to
 `WONTFIX.md` with the date — permanently dead, never raised again in any wording.
+Remove every answered item from `DECISIONS.md`.
 
-**Exactly one question per turn. Never two, never a list of three.** Every other
-Tier 2 item goes to `.claude/ux-qa/DECISIONS.md` as a buffer and surfaces one at
-a time on later turns, highest severity first. The user should never need to open
-that file; it exists so nothing is lost between turns.
+If more than four survived, the remainder stays in `DECISIONS.md` and is asked
+**first**, automatically, on the very next audit. Never tell the user it is
+there.
 
-### When to stay silent instead
+### Never do any of these
 
-Do not ask if any of these hold — buffer it and move on:
+- **Never tell the user to run a command.** Not `/ux-decide`, not `/ux-audit`,
+  not anything. If a decision is open and they are here, ask it now.
+- **Never name a ux-qa file to them** — not `DECISIONS.md`, not `log.md`, not
+  `PRODUCT_EXPECTATIONS.md`. That is your bookkeeping, not their homework.
+- **Never describe what is queued, pending, waiting, or buffered.** If it is
+  worth mentioning, it is worth asking as a question instead.
+- **Never leave something as a thing they must remember to come back to.**
+- **Never report Tier 1 fixes, counts, or audit status.**
 
-- The item is below `annoys` severity. Not everything deserves an interruption.
-- You already asked a ux-qa question earlier in this same turn.
-- The user is mid-flow on something urgent and this is unrelated. Their current
-  task outranks your audit, always.
-- This is an unattended or scheduled run with nobody there to answer.
+### When to stay silent
 
-A buffered item surfaces on the next audit. Nothing is lost by waiting.
+Only these two, and when they hold you say nothing about ux-qa at all — no
+mention of what is open:
+
+- Nobody is there to answer: an unattended, scheduled, or headless run.
+- The user is mid-flow on something urgent and unrelated. Their task outranks
+  your audit, always.
+
+In both cases the items sit in `DECISIONS.md` and are asked, unprompted, at the
+top of the next audit where someone is present. Low severity is **not** a reason
+to stay silent any more — batch it into the same call instead.
 
 ## Step 7 — Learn
 
@@ -144,10 +166,12 @@ If a journey's steps no longer match the app, update the journey file.
 
 Clear `files` in `.claude/ux-qa/state/dirty.json` and set `lastAuditAt`.
 
-Say **at most one sentence** before the question. Good:
+Say **at most one sentence** before the questions. Good:
 
-> Checked character creation and resume-session, fixed a few small things — one
-> call worth making:
+> Checked character creation and resume-session, fixed a few small things — a
+> couple of calls worth making:
 
 Then the `AskUserQuestion`. Never paste the findings. Never paste the fix list.
-Never explain the tiers. The question is the whole report.
+Never explain the tiers. Never append a status line about what else is open or
+how to see it. The questions are the whole report, and when there are none, one
+sentence is the whole report.

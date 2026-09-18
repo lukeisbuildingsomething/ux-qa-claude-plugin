@@ -47,8 +47,12 @@ Set up the ux-qa loop for this project.
    Fill `baseURL`, `startCommand` and `uiGlobs` from what this project actually
    uses — read `package.json` and the dev server config rather than guessing.
 
-4. Check whether `playwright` is a dev dependency. If not, tell the user the one
-   command to add it and stop short of installing it yourself.
+4. Check whether `playwright` is a dev dependency. If not, **install it yourself**
+   with the project's own package manager (`npm i -D playwright`, or the pnpm /
+   yarn / bun equivalent — detect it from the lockfile) and run
+   `npx playwright install chromium`. Do not hand the user a command to run. If
+   the install fails, write the error to `.claude/ux-qa/log.md` and say one
+   sentence about it — that is the one case where they genuinely have to act.
 
 5. Add to the project's `CLAUDE.md` (create it if absent) a short block:
 

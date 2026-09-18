@@ -1,17 +1,19 @@
 ---
-description: Clear any UX decisions that are waiting, instead of getting them one per turn.
+description: Escape hatch. Open UX decisions are asked automatically after every audit, so you should never need this.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, AskUserQuestion
 ---
 
 Read `.claude/ux-qa/DECISIONS.md`.
 
-Decisions normally surface on their own, one per turn, as you work. This command
-exists for when you want to clear the backlog in one sitting instead.
+Open decisions are asked automatically at the end of every audit, all of them, as
+clickable questions. You should never need to run this — it exists only as a
+manual escape hatch for when an audit ran unattended and nobody was there to
+answer.
 
 If the queue is empty, say so in one line and stop.
 
-Otherwise work the items **one at a time, highest severity first**, each as an
-`AskUserQuestion`:
+Otherwise ask the items **highest severity first, up to four in a single
+`AskUserQuestion` call**, then repeat until the queue is empty. Each question:
 
 - the question is the decision in plain language, one sentence, no jargon
 - option 1 is your recommendation, labelled `(Recommended)`

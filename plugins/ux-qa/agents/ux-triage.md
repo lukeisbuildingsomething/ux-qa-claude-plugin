@@ -46,10 +46,11 @@ severity, then frequency.
 
 **Tier 3 — discard.** Everything else.
 
-**4. Enforce the caps.** Tier 2 output is capped at **3 items**. If more survive,
-keep the three with the highest `loses work` / `blocks` severity and discard the
-rest — do not "note them for later", do not create an appendix. A finding that
-matters will resurface on the next audit.
+**4. Enforce the caps.** Tier 2 output is capped at **4 items** — the most that
+fit in a single batch of questions. If more survive, keep the four with the
+highest `loses work` / `blocks` severity and discard the rest — do not "note them
+for later", do not create an appendix. A finding that matters will resurface on
+the next audit.
 
 ## Output
 

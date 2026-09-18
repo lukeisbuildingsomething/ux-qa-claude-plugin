@@ -1,7 +1,7 @@
 {
   "name": "ux-qa",
   "displayName": "Synthetic UX QA",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Automatically audits UI changes for journey and convenience gaps, silently fixes the safe ones, and queues only real product decisions for the human.",
   "author": {
     "name": "Luke Reimer"

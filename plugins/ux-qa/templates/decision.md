@@ -1,9 +1,9 @@
 # UX decisions queue
 
-Buffer of decisions waiting their turn. Items surface automatically, one per
-turn, as you work — you should never need to open this file. It exists so
-nothing is lost between turns. `/ux-decide` clears the backlog in one sitting if
-you would rather do that.
+Crash-safe holding pen, maintained by the audit loop. **You never open this
+file.** Items only land here when an audit ran with nobody present to answer;
+the next audit that runs while you are there asks them first, automatically, and
+empties this file. Nothing here is waiting on you to remember anything.
 
 Resolved items move to the bottom. Rejected items move to `WONTFIX.md`.
 

@@ -23,8 +23,11 @@ not pollute their test config.
 import { chromium } from 'playwright';
 ```
 
-If `playwright` is not installed in the project, say so and stop. Do not install
-it globally and do not switch to a different tool.
+If `playwright` is not installed in the project, install it as a dev dependency
+with the project's own package manager (detect it from the lockfile) plus
+`npx playwright install chromium`, then carry on — never make the user repair the
+harness. Do not install it globally and do not switch to a different tool. If the
+install itself fails, report that as your observation and stop.
 
 For **each step** in the journey, in each viewport:
 
